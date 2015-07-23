@@ -12,7 +12,11 @@
 <body>
 	<h1>Ваша корзина</h1>
 <?php
-
+	if ($count < 0) {
+		echo "<p>Корзина пуста! Вернитесь в <a href='catalog.php'>каталог</a></p>";
+	} else {
+			echo "<p>Вернуться в <a href='catalog.php'>каталог</a>.</p>";
+	}
 ?>
 <table border="1" cellpadding="5" cellspacing="0" width="100%">
 <tr>
@@ -25,11 +29,27 @@
 	<th>Удалить</th>
 </tr>
 <?php
-	
+	$myBasket = myBasket();
+	$i = 1;
+	$sum = 0; // Общая сумма заказа
 ?>
+	<?foreach($myBasket as $item){?>
+	<tr>
+		<td><?=$i?></td>
+		<td><?=$item['title']?></td>
+		<td><?=$item['author']?></td>
+		<td><?=$item['pubyear']?></td>
+		<td><?=$item['price']?></td>
+		<td><?=$item['quantity']?></td>
+		<td><a href="delete_from_basket.php?id=<?=$item['id']?>">Удалить</a></td>
+	</tr>
+	<?
+		$sum = $sum + $item['price']*$item['quantity'];
+		$i++;
+	}?>
 </table>
 
-<p>Всего товаров в корзине на сумму: руб.</p>
+<p>Всего товаров в корзине на сумму: <?=$sum?> руб.</p>
 
 <div align="center">
 	<input type="button" value="Оформить заказ!"
