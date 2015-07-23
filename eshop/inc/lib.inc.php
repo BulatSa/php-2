@@ -1,13 +1,13 @@
 <?php
   function addItemToCatalog($title, $author, $pubyear, $price) {
     $sql = "INSERT INTO catalog (title, author, pubyear, price) VALUES ('$title', '$author', '$pubyear', '$price')";
-    $globalLink = $GLOBALS['link'];
+    global $link;
 
-    if (!$stmt = mysqli_prepare($globalLink, $sql)) {
+    if (!$stmt = mysqli_prepare($link, $sql)) {
         echo 'Ошибка lib <br>'
-          .mysqli_errno($globalLink)
+          .mysqli_errno($link)
           . " : "
-          .mysqli_error($globalLink);
+          .mysqli_error($link);
       return false;
     }
 
@@ -15,13 +15,14 @@
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     return true;
-    //    if (mysqli_query($globalLink, $sql)) {
-    //      return true;
-    //    } else {
-    //        echo 'Ошибка lib <br>'
-    //          .mysqli_errno($globalLink)
-    //          . " : "
-    //          .mysqli_error($globalLink);
-    //        return false;
-    //      }
+  }
+
+  function selectAllItems() {
+    global $link;
+    $sql = "SELECT id, title, author, pubyear, price FROM catalog";
+    if (!$result = mysqli_query($link, $sql))
+      return false;
+    $items = mysqli_fetch_all($result, MYSQL_ASSOC);
+    mysqli_free_result($items);
+    return $items;
   }
