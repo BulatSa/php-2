@@ -12,5 +12,7 @@
   if (!$link) {
     die('Ошибка подключения (' . mysqli_connect_errno() . ') '
       . mysqli_connect_error());
-  }; //else echo 'Соединение установлено... ' . mysqli_get_host_info($link) . "<br>";
+  };
+
+  basketInit(); // Инициализация корзины
 
