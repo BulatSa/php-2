@@ -1,13 +1,17 @@
 <?php
+  function showSqlErrors ($functionName) {
+    global $link;
+    echo "Ошибка $functionName <br>"
+      .mysqli_errno($link)
+      . " : "
+      .mysqli_error($link)."<br>";
+  }
   function addItemToCatalog($title, $author, $pubyear, $price) {
     $sql = "INSERT INTO catalog (title, author, pubyear, price) VALUES ('$title', '$author', '$pubyear', '$price')";
     global $link;
 
     if (!$stmt = mysqli_prepare($link, $sql)) {
-        echo 'Ошибка lib <br>'
-          .mysqli_errno($link)
-          . " : "
-          .mysqli_error($link);
+      showSqlErrors("addItemToCatalog");
       return false;
     }
 
@@ -20,8 +24,10 @@
   function selectAllItems() {
     global $link;
     $sql = "SELECT id, title, author, pubyear, price FROM catalog";
-    if (!$result = mysqli_query($link, $sql))
+    if (!$result = mysqli_query($link, $sql)) {
+      showSqlErrors("selectAllItems");
       return false;
+    }
     $items = mysqli_fetch_all($result, MYSQL_ASSOC);
     mysqli_free_result($items);
     return $items;
