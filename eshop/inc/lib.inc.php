@@ -56,3 +56,30 @@
     $basket[$id] = 1;
     saveBasket();
   }
+
+  function myBasket() {
+    global $link, $basket;
+    $goods = array_keys($basket); // Отбор ключей-id товаров в массив
+    array_shift($goods); // Убираем 1 элемент orderid
+    if (!$goods)
+      return false;
+    $ids = implode(",", $goods); // Получаем строку из массива
+    $sql = "SELECT id, author, title, pubyear, price FROM catalog WHERE id IN ($ids)";
+    if (!$result = mysqli_query($link, $sql)) {
+      showSqlErrors("myBasket");
+      return false;
+    }
+    $items = result2Array($result);
+    mysqli_free_result($result); // Освобождение памяти
+    return $items;
+  }
+
+  function result2Array($data) { //Возвращает массив товаров с их кол-ом
+    global $basket;
+    $arr = [];
+    while($row = mysqli_fetch_assoc($data)) {
+      $row['quantity'] = $basket[$row['id']]; // Кол-во товара
+      $arr[] = $row; // Массив массивов
+    }
+    return $arr; // Массив массивов
+  }
