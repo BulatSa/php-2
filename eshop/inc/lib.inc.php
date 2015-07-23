@@ -53,7 +53,7 @@
 
   function add2Basket($id) {
     global $basket;
-    $basket[$id] = 1;
+    $basket[$id] = $basket[$id] + 1;
     saveBasket();
   }
 
@@ -82,4 +82,10 @@
       $arr[] = $row; // Массив массивов
     }
     return $arr; // Массив массивов
+  }
+
+  function deleteItemFromBasket($id) {
+    global $basket;
+    unset($basket[$id]);
+    saveBasket();
   }

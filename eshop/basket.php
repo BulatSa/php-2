@@ -12,10 +12,10 @@
 <body>
 	<h1>Ваша корзина</h1>
 <?php
-	if ($count < 0) {
-		echo "<p>Корзина пуста! Вернитесь в <a href='catalog.php'>каталог</a></p>";
+	if ($count > 0) {
+		echo "<p>Вернуться в <a href='catalog.php'>каталог</a>.</p>";
 	} else {
-			echo "<p>Вернуться в <a href='catalog.php'>каталог</a>.</p>";
+		echo "<p>Корзина пуста! Вернитесь в <a href='catalog.php'>каталог</a></p>";
 	}
 ?>
 <table border="1" cellpadding="5" cellspacing="0" width="100%">
